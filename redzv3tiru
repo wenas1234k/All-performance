@@ -1,0 +1,166 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local ServerScriptService = game:GetService("ServerScriptService")
+
+local Settings = {
+    AutoFarming = true,
+    MaxLevel = 500,
+    AutoLeviathan = true,
+    AutoGacha = true,
+    PlayerSpeed = 500,
+    RaidBoss = "All",
+    AutoRaid = true,
+    AutoTrial = true,
+}
+
+local Player = Players.LocalPlayer
+local Character = Player.Character
+local Humanoid = Character:WaitForChild("Humanoid")
+local Mouse = UserInputService:GetMouse()
+
+local UI = script.Parent
+local SettingsUI = UI:WaitForChild("Settings")
+local AutoFarmingUI = UI:WaitForChild("AutoFarming")
+local LeviathanUI = UI:WaitForChild("Leviathan")
+local GachaUI = UI:WaitForChild("Gacha")
+local RaidUI = UI:WaitForChild("Raid")
+local TrialUI = UI:WaitForChild("Trial")
+
+local function UpdateSettings()
+    for _, child in pairs(SettingsUI:GetChildren()) do
+        if child:IsA("TextButton") then
+            if child.Text == "AutoFarming" then
+                Settings.AutoFarming = child.TextColor3 == Color3.new(0, 1, 0)
+            elseif child.Text == "AutoLeviathan" then
+                Settings.AutoLeviathan = child.TextColor3 == Color3.new(0, 1, 0)
+            elseif child.Text == "AutoGacha" then
+                Settings.AutoGacha = child.TextColor3 == Color3.new(0, 1, 0)
+            elseif child.Text == "MaxLevel" then
+                Settings.MaxLevel = tonumber(child.Text)
+            elseif child.Text == "PlayerSpeed" then
+                Settings.PlayerSpeed = tonumber(child.Text)
+            elseif child.Text == "RaidBoss" then
+                Settings.RaidBoss = child.Text
+            elseif child.Text == "AutoRaid" then
+                Settings.AutoRaid = child.TextColor3 == Color3.new(0, 1, 0)
+            elseif child.Text == "AutoTrial" then
+                Settings.AutoTrial = child.TextColor3 == Color3.new(0, 1, 0)
+            end
+        end
+    end
+end
+
+local function AutoFarming()
+    while Settings.AutoFarming do
+        if Settings.MaxLevel > 0 then
+            if Humanoid.Level >= Settings.MaxLevel then
+                Settings.MaxLevel = Settings.MaxLevel + 100
+            end
+        end
+        if Settings.PlayerSpeed > 0 then
+            Character:WaitForChild("HumanoidRootPart").CFrame = Character:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, Settings.PlayerSpeed / 100)
+        end
+    end
+end
+
+local function AutoLeviathan()
+    while Settings.AutoLeviathan do
+        local Leviathan = game:GetService("Workspace"):WaitForChild("Leviathan")
+        if Leviathan then
+            Character:WaitForChild("HumanoidRootPart").CFrame = Leviathan.CFrame
+        end
+    end
+end
+
+local function AutoGacha()
+    while Settings.AutoGacha do
+        local Gacha = game:GetService("Workspace"):WaitForChild("Gacha")
+        if Gacha then
+            Gacha:FireServer()
+        end
+    end
+end
+
+local function AutoRaid()
+    while Settings.AutoRaid do
+        local Raid = game:GetService("Workspace"):WaitForChild("Raid")
+        if Raid then
+            if Settings.RaidBoss == "All" then
+                for _, child in pairs(Raid:GetDescendants()) do
+                    if child:IsA("BasePart") then
+                        if child.Name:match("Boss") then
+                            Character:WaitForChild("HumanoidRootPart").CFrame = child.CFrame
+                        end
+                    end
+                end
+            else
+                for _, child in pairs(Raid:GetDescendants()) do
+                    if child:IsA("BasePart") then
+                        if child.Name:match(Settings.RaidBoss) then
+                            Character:WaitForChild("HumanoidRootPart").CFrame = child.CFrame
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function AutoTrial()
+    while Settings.AutoTrial do
+        local Trial = game:GetService("Workspace"):WaitForChild("Trial")
+        if Trial then
+            for _, child in pairs(Trial:GetDescendants()) do
+                if child:IsA("BasePart") then
+                    if child.Name:match("Start") then
+                        Character:WaitForChild("HumanoidRootPart").CFrame = child.CFrame
+                    end
+                end
+            end
+            for _, child in pairs(Trial:GetDescendants()) do
+                if child:IsA("BasePart") then
+                    if child.Name:match("Finish") then
+                        Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+                    end
+                end
+            end
+        end
+    end
+end
+
+UpdateSettings()
+
+AutoFarmingUI.MouseButton1Down:Connect(function()
+    Settings.AutoFarming = not Settings.AutoFarming
+    UpdateSettings()
+end)
+
+LeviathanUI.MouseButton1Down:Connect(function()
+    Settings.AutoLeviathan = not Settings.AutoLeviathan
+    UpdateSettings()
+end)
+
+GachaUI.MouseButton1Down:Connect(function()
+    Settings.AutoGacha = not Settings.AutoGacha
+    UpdateSettings()
+end)
+
+RaidUI.MouseButton1Down:Connect(function()
+    Settings.AutoRaid = not Settings.AutoRaid
+    UpdateSettings()
+end)
+
+TrialUI.MouseButton1Down:Connect(function()
+    Settings.AutoTrial = not Settings.AutoTrial
+    UpdateSettings()
+end)
+
+AutoFarming()
+
+AutoLeviathan()
+
+AutoGacha()
+
+AutoRaid()
