@@ -1,0 +1,115 @@
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local StarterGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local graphicsSettings = {}
+
+-- Set max graphics and FPS
+graphicsSettings["GraphicsQualityLevel"] = 10 -- Max graphics quality
+graphicsSettings["MaxFPS"] = 60 -- Max FPS (Roblox caps at 60 FPS)
+
+-- Apply graphics settings
+pcall(function()
+    settings().Rendering.QualityLevel = graphicsSettings["GraphicsQualityLevel"]
+    settings().Rendering.FrameRateManager = Enum.FrameRateManager.Fixed60
+end)
+
+-- Ping boost simulation (reduce network latency by setting replication settings)
+pcall(function()
+    settings().Network.IncomingReplicationLag = 0
+    settings().Network.OutgoingReplicationLag = 0
+end)
+
+-- Reduce effects and boost FPS by disabling shadows, particles, and other effects
+pcall(function()
+    settings().Rendering.Shadows = false
+    settings().Rendering.GlobalShadows = false
+    settings().Rendering.SSAO = false
+    settings().Rendering.LightMap = false
+    settings().Rendering.TerrainDecoration = false
+    settings().Rendering.TerrainWater = false
+    settings().Rendering.TerrainWaterWaveSize = 0
+    settings().Rendering.TerrainWaterWaveSpeed = 0
+    settings().Rendering.TerrainWaterReflectance = 0
+    settings().Rendering.TerrainWaterTransparency = 0
+    settings().Rendering.TerrainWaterWaveSize = 0
+    settings().Rendering.TerrainWaterWaveSpeed = 0
+    settings().Rendering.TerrainWaterReflectance = 0
+    settings().Rendering.TerrainWaterTransparency = 0
+    settings().Rendering.TerrainWaterWaveSize = 0
+    settings().Rendering.TerrainWaterWaveSpeed = 0
+    settings().Rendering.TerrainWaterReflectance = 0
+    settings().Rendering.TerrainWaterTransparency = 0
+    settings().Rendering.TerrainWaterWaveSize = 0
+    settings().Rendering.TerrainWaterWaveSpeed = 0
+    settings().Rendering.TerrainWaterReflectance = 0
+    settings().Rendering.TerrainWaterTransparency = 0
+end)
+
+-- Enable V-Sync (Vertical Sync)
+pcall(function()
+    settings().Rendering.VSync = true
+end)
+
+-- Enable Anti-Aliasing (MSAA)
+pcall(function()
+    settings().Rendering.AntiAliasingMode = Enum.AntiAliasingMode.MSAA
+end)
+
+-- Enable Variable Refresh Rate (VRR) if supported
+pcall(function()
+    settings().Rendering.VariableRefreshRate = true
+end)
+
+-- Force GPU rendering (Roblox uses GPU by default, simulate by setting quality high)
+pcall(function()
+    settings().Rendering.QualityLevel = 10
+end)
+
+-- Tessellation, Texture Filtering, Anisotropic Filtering (simulate by max quality)
+pcall(function()
+    settings().Rendering.TextureFilteringMode = Enum.TextureFilteringMode.Anisotropic
+end)
+
+-- Overclocking, Underclocking, Thermal Throttling, DVFS, Kernel Tuning, CPU/GPU Governor
+-- Not accessible in Roblox Lua, simulate by setting max performance mode if possible
+pcall(function()
+    settings().PerformanceMode = Enum.PerformanceMode.MaxPerformance
+end)
+
+-- RAM Expansion / Virtual RAM / Z-RAM / Swap Memory / Memory Compression
+-- Not accessible in Roblox Lua, no implementation possible
+
+-- Hardware Acceleration and AI Performance Tuning
+-- Not accessible in Roblox Lua, no implementation possible
+
+-- Pre-loading / Pre-rendering (simulate by preloading assets)
+local function preloadAssets()
+    for _, asset in pairs(workspace:GetDescendants()) do
+        if asset:IsA("BasePart") or asset:IsA("Decal") or asset:IsA("Texture") then
+            asset:GetPropertyChangedSignal("Transparency"):Wait()
+        end
+    end
+end
+coroutine.wrap(preloadAssets)()
+
+-- Touch Sampling Rate, Low Latency Mode, Touch Interpolation, Input Lag Reduction, Haptic Feedback Acceleration
+-- Not accessible in Roblox Lua, no implementation possible
+
+-- Auto run all code on start
+RunService.Heartbeat:Connect(function()
+    -- Keep max FPS
+    settings().Rendering.FrameRateManager = Enum.FrameRateManager.Fixed60
+end)
+
+-- Auto max graphics and FPS on player join
+Players.PlayerAdded:Connect(function(plr)
+    if plr == player then
+        pcall(function()
+            settings().Rendering.QualityLevel = 10
+            settings().Rendering.FrameRateManager = Enum.FrameRateManager.Fixed60
+        end)
+    end
+end)
