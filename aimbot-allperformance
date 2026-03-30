@@ -1,0 +1,76 @@
+--// 🔥 ALL-IN PERFORMANCE + PING STABLE (SAFE)
+
+local function safe(f) pcall(f) end
+local RS = game:GetService("RunService")
+
+-- Anti error
+safe(function()
+    game:GetService("ScriptContext").Error:Connect(function() end)
+end)
+
+-- FPS
+safe(function() setfpscap(120) end)
+settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+
+-- Visual cleaner (ringan tapi masih kelihatan)
+local function clean()
+    for _, v in pairs(workspace:GetDescendants()) do
+        safe(function()
+            if v:IsA("BasePart") then
+                v.Material = Enum.Material.Plastic
+                v.CastShadow = false
+                v.Reflectance = 0
+            end
+            if v:IsA("ParticleEmitter") or v:IsA("Trail") or v:IsA("Smoke") or v:IsA("Fire") then
+                v.Enabled = false
+            end
+            if v:IsA("Decal") or v:IsA("Texture") then
+                v.Transparency = 0.6
+            end
+        end)
+    end
+end
+clean()
+
+-- Lighting ringan
+safe(function()
+    local L = game:GetService("Lighting")
+    L.GlobalShadows = false
+    L.FogEnd = 9e9
+    L.Brightness = 2
+    L.EnvironmentDiffuseScale = 0
+    L.EnvironmentSpecularScale = 0
+end)
+
+-- Ping stabil (feel)
+safe(function() settings().Network.IncomingReplicationLag = 0 end)
+settings().Physics.AllowSleep = true
+safe(function() workspace.StreamingEnabled = true end)
+
+task.spawn(function()
+    while true do
+        safe(function() settings().Network.IncomingReplicationLag = 0 end)
+        task.wait(1)
+    end
+end)
+
+-- Memory & stabilizer
+task.spawn(function()
+    while true do
+        collectgarbage("collect")
+        task.wait(8)
+    end
+end)
+
+RS.RenderStepped:Connect(function()
+    settings().Rendering.ThrottleFramerate = false
+end)
+
+task.spawn(function()
+    while true do
+        safe(function() setfpscap(120) end)
+        task.wait(4)
+    end
+end)
+
+print("🔥 PERFORMANCE + PING STABLE ACTIVE")
