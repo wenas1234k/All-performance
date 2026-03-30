@@ -1,0 +1,130 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+local function getDevice()
+    local device = Instance.new("ScreenGui")
+    device.Name = "Samsung S25 Ultra"
+    device.Parent = Players.LocalPlayer.PlayerGui
+
+    local cpu = Instance.new("TextLabel")
+    cpu.Name = "CPU"
+    cpu.Size = UDim2.new(0, 200, 0, 30)
+    cpu.Position = UDim2.new(0, 10, 0, 10)
+    cpu.Text = "Snapdragon Elite 8"
+    cpu.TextSize = 14
+    cpu.TextColor3 = Color3.new(1, 1, 1)
+    cpu.BackgroundTransparency = 1
+    cpu.Parent = device
+
+    local gpu = Instance.new("TextLabel")
+    gpu.Name = "GPU"
+    gpu.Size = UDim2.new(0, 200, 0, 30)
+    gpu.Position = UDim2.new(0, 10, 0, 40)
+    gpu.Text = "Adreno 740"
+    gpu.TextSize = 14
+    gpu.TextColor3 = Color3.new(1, 1, 1)
+    gpu.BackgroundTransparency = 1
+    gpu.Parent = device
+
+    local ram = Instance.new("TextLabel")
+    ram.Name = "RAM"
+    ram.Size = UDim2.new(0, 200, 0, 30)
+    ram.Position = UDim2.new(0, 10, 0, 70)
+    ram.Text = "16 GB"
+    ram.TextSize = 14
+    ram.TextColor3 = Color3.new(1, 1, 1)
+    ram.BackgroundTransparency = 1
+    ram.Parent = device
+
+    local chipset = Instance.new("TextLabel")
+    chipset.Name = "Chipset"
+    chipset.Size = UDim2.new(0, 200, 0, 30)
+    chipset.Position = UDim2.new(0, 10, 0, 100)
+    chipset.Text = "Snapdragon Elite 8"
+    chipset.TextSize = 14
+    chipset.TextColor3 = Color3.new(1, 1, 1)
+    chipset.BackgroundTransparency = 1
+    chipset.Parent = device
+
+    local maxPerformance = Instance.new("TextLabel")
+    maxPerformance.Name = "Max Performance"
+    maxPerformance.Size = UDim2.new(0, 200, 0, 30)
+    maxPerformance.Position = UDim2.new(0, 10, 0, 130)
+    maxPerformance.Text = "Enabled"
+    maxPerformance.TextSize = 14
+    maxPerformance.TextColor3 = Color3.new(1, 1, 1)
+    maxPerformance.BackgroundTransparency = 1
+    maxPerformance.Parent = device
+
+    local fastFlags = Instance.new("TextLabel")
+    fastFlags.Name = "Fast Flags"
+    fastFlags.Size = UDim2.new(0, 200, 0, 30)
+    fastFlags.Position = UDim2.new(0, 10, 0, 160)
+    fastFlags.Text = "Enabled"
+    fastFlags.TextSize = 14
+    fastFlags.TextColor3 = Color3.new(1, 1, 1)
+    fastFlags.BackgroundTransparency = 1
+    fastFlags.Parent = device
+
+    local supportAllServers = Instance.new("TextLabel")
+    supportAllServers.Name = "Support All Servers"
+    supportAllServers.Size = UDim2.new(0, 200, 0, 30)
+    supportAllServers.Position = UDim2.new(0, 10, 0, 190)
+    supportAllServers.Text = "Enabled"
+    supportAllServers.TextSize = 14
+    supportAllServers.TextColor3 = Color3.new(1, 1, 1)
+    supportAllServers.BackgroundTransparency = 1
+    supportAllServers.Parent = device
+
+    local autoRun = Instance.new("TextLabel")
+    autoRun.Name = "Auto Run"
+    autoRun.Size = UDim2.new(0, 200, 0, 30)
+    autoRun.Position = UDim2.new(0, 10, 0, 220)
+    autoRun.Text = "Enabled"
+    autoRun.TextSize = 14
+    autoRun.TextColor3 = Color3.new(1, 1, 1)
+    autoRun.BackgroundTransparency = 1
+    autoRun.Parent = device
+
+    device:Destroy()
+end
+
+local function createDevice()
+    getDevice()
+end
+
+createDevice()
+
+local function updateDevice()
+    local device = Players.LocalPlayer.PlayerGui:WaitForChild("Samsung S25 Ultra")
+
+    local cpu = device:WaitForChild("CPU")
+    cpu.Text = "Snapdragon Elite 8, 3.2 GHz"
+
+    local gpu = device:WaitForChild("GPU")
+    gpu.Text = "Adreno 740, 1.2 GHz"
+
+    local ram = device:WaitForChild("RAM")
+    ram.Text = "16 GB, 12 GB Free"
+
+    local chipset = device:WaitForChild("Chipset")
+    chipset.Text = "Snapdragon Elite 8"
+
+    local maxPerformance = device:WaitForChild("Max Performance")
+    maxPerformance.Text = "Enabled, 100% CPU"
+
+    local fastFlags = device:WaitForChild("Fast Flags")
+    fastFlags.Text = "Enabled, Fastest Flags"
+
+    local supportAllServers = device:WaitForChild("Support All Servers")
+    supportAllServers.Text = "Enabled, All Servers Supported"
+
+    local autoRun = device:WaitForChild("Auto Run")
+    autoRun.Text = "Enabled, Auto Run Enabled"
+end
+
+while true do
+    updateDevice()
+    wait(1)
+end
