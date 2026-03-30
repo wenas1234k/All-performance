@@ -1,0 +1,63 @@
+-- Network Acceleration
+local NetService = game:GetService("Network")
+NetService.MaxBandwidth = 1000000
+NetService.MinBandwidth = 500000
+NetService.Latency = 0.1
+NetService.PacketPriority = Enum.NetworkPriority.High
+
+-- Sistem & Storage (File)
+local FileService = game:GetService("FileService")
+local FileSystem = FileService:GetFileFolderService()
+FileSystem:FSTRIM()
+FileSystem:SetWriteCache(true)
+FileSystem:SetEntropySeeding(true)
+FileSystem:SetUFS(true)
+FileSystem:SetIOPScheduler("Deadline")
+FileSystem:SetTouchSamplingRate(60)
+FileSystem:SetLowLatencyMode(true)
+FileSystem:SetTouchInterpolation(true)
+FileSystem:SetInputLagReduction(true)
+FileSystem:SetHapticFeedbackAcceleration(true)
+FileSystem:SetOverclocking(true)
+FileSystem:SetUnderclocking(false)
+FileSystem:SetThermalThrottling(false)
+FileSystem:SetDynamicVoltageAndFrequencyScaling(true)
+FileSystem:SetRAMExpansion(true)
+FileSystem:SetVirtualRAM(true)
+FileSystem:SetRAMPlus(true)
+FileSystem:SetZRAM(true)
+FileSystem:SetSwapMemory(true)
+FileSystem:SetMemoryCompression(true)
+FileSystem:SetHardwareAcceleration(true)
+FileSystem:SetAIPerformanceTuning(true)
+FileSystem:SetPreloading(true)
+FileSystem:SetPreRendering(true)
+FileSystem:SetKernelTuning(true)
+FileSystem:SetCPUGovernor("Performance")
+FileSystem:SetGPUGovernor("Performance")
+
+-- Frame Generation (Interpolasi Frame)
+local RenderService = game:GetService("Render")
+RenderService:SetMEMC(true)
+RenderService:SetMotionEstimation(true)
+RenderService:SetMotionCompensation(true)
+RenderService:SetRayTracing(true)
+RenderService:SetDLSS(true)
+RenderService:SetFSR(true)
+RenderService:SetMetalFXUpscaling(true)
+RenderService:SetVSync(true)
+RenderService:SetAntiAliasing(true)
+RenderService:SetVariableRefreshRate(true)
+RenderService:SetGPURendering(true)
+RenderService:SetTessellation(true)
+RenderService:SetTextureFiltering(true)
+RenderService:SetAnisotropicFiltering(true)
+
+-- Auto-run on mobile and server
+while wait() do
+    if game:GetService("RunService"):IsServiceRunning("Server") then
+        -- Server code here
+    elseif game:GetService("RunService"):IsServiceRunning("Client") then
+        -- Client code here
+    end
+end
