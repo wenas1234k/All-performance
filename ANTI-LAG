@@ -1,0 +1,103 @@
+--// 💀 AUTO RUN FULL BRUTAL PERFORMANCE
+
+-- wait game ready (anti crash)
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+-- services
+local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+local Terrain = workspace:FindFirstChildOfClass("Terrain")
+
+local player = Players.LocalPlayer
+
+--// 🛡️ SAFE CALL
+local function safe(f)
+    local ok, err = pcall(f)
+    if not ok then warn("⚠️ Blocked:", err) end
+end
+
+--// 🌑 BASE OPTIMIZATION
+local function base()
+    safe(function()
+        Lighting.GlobalShadows = false
+        Lighting.FogEnd = 1e10
+        Lighting.Brightness = 1
+        Lighting.EnvironmentDiffuseScale = 0
+        Lighting.EnvironmentSpecularScale = 0
+    end)
+
+    safe(function()
+        for _, v in pairs(Lighting:GetDescendants()) do
+            if v:IsA("PostEffect") then
+                v:Destroy()
+            end
+        end
+    end)
+
+    safe(function()
+        if Terrain then
+            Terrain.WaterWaveSize = 0
+            Terrain.WaterWaveSpeed = 0
+            Terrain.WaterReflectance = 0
+            Terrain.WaterTransparency = 1
+        end
+    end)
+end
+
+--// 💀 FULL BRUTAL MODE
+local function brutal()
+    safe(function()
+        for _, obj in pairs(workspace:GetDescendants()) do
+            if obj and obj.Parent then
+                if obj:IsA("BasePart") then
+                    obj.Material = Enum.Material.SmoothPlastic
+                    obj.Reflectance = 0
+                elseif obj:IsA("Decal") or obj:IsA("Texture") then
+                    obj:Destroy()
+                elseif obj:IsA("ParticleEmitter")
+                or obj:IsA("Trail")
+                or obj:IsA("Smoke")
+                or obj:IsA("Fire")
+                or obj:IsA("Sparkles") then
+                    obj.Enabled = false
+                end
+            end
+        end
+    end)
+
+    safe(function()
+        settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+    end)
+end
+
+--// 🧍 CHARACTER OPTIMIZE
+local function charOpt(char)
+    safe(function()
+        for _, v in pairs(char:GetDescendants()) do
+            if v:IsA("BasePart") then
+                v.Material = Enum.Material.SmoothPlastic
+            end
+        end
+    end)
+end
+
+if player then
+    if player.Character then
+        charOpt(player.Character)
+    end
+
+    player.CharacterAdded:Connect(function(c)
+        task.wait(1)
+        charOpt(c)
+    end)
+end
+
+--// 🚀 AUTO RUN INIT (langsung brutal)
+task.spawn(function()
+    base()
+    brutal()
+end)
+
+print("💀 BRUTAL MODE AUTO ACTIVE")
