@@ -1,0 +1,209 @@
+--// WENAS GOD ENGINE V7 (AI + ULTRA BRUTAL)
+
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local Stats = game:GetService("Stats")
+
+-- SAFE SYSTEM
+local function safe(f) pcall(f) end
+
+local function fflag(name, value)
+    safe(function()
+        setfflag = setfflag or function() end
+        setfflag(name, value)
+    end)
+end
+
+-- =========================
+-- 🚀 AUTO RUN
+-- =========================
+task.spawn(function()
+    while true do task.wait(1) end
+end)
+
+-- =========================
+-- ⚡ FULL FFLAGS GOD STACK
+-- =========================
+fflag("TaskSchedulerTargetFps", "120")
+fflag("TaskSchedulerThrottle", "0")
+fflag("DebugGraphicsPreferVulkan", "true")
+
+fflag("GraphicsMode", "Performance")
+fflag("RenderQualityLevel", "1")
+fflag("TextureQualityOverride", "0")
+fflag("ShadowMapQuality", "0")
+fflag("DisablePostFx", "true")
+fflag("LightingReduced", "true")
+fflag("SkipSunShadows", "true")
+fflag("DisableLightingShadows", "true")
+
+fflag("NetworkInterpolation", "0")
+fflag("NetworkPrediction", "0")
+fflag("NetworkSmoothing", "0")
+fflag("PingCompensation", "false")
+
+fflag("PhysicsSkipContacts", "true")
+fflag("PhysicsEnvironmentalThrottle", "true")
+fflag("PhysicsAllowSleep", "true")
+
+fflag("StreamingEnabled", "true")
+fflag("StreamingMinRadius", "16")
+fflag("StreamingTargetRadius", "32")
+
+fflag("ReduceInputDelay", "true")
+
+safe(function()
+    setfpscap = setfpscap or function() end
+    setfpscap(120)
+end)
+
+-- =========================
+-- 🎮 HARD PERFORMANCE MODE
+-- =========================
+safe(function()
+    settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+end)
+
+Lighting.GlobalShadows = false
+Lighting.FogEnd = 9e9
+Lighting.Brightness = 0
+
+Workspace.StreamingEnabled = true
+
+-- =========================
+-- 🧹 ULTRA CLEANER
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(4)
+        for _, v in pairs(Workspace:GetDescendants()) do
+            safe(function()
+                if v:IsA("ParticleEmitter") or v:IsA("Trail") then v:Destroy() end
+                if v:IsA("Decal") or v:IsA("Texture") then v:Destroy() end
+                if v:IsA("Explosion") or v:IsA("Fire") then v:Destroy() end
+            end)
+        end
+    end
+end)
+
+-- =========================
+-- 👤 CHARACTER STRIP
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(5)
+        for _, plr in pairs(Players:GetPlayers()) do
+            if plr.Character then
+                for _, obj in pairs(plr.Character:GetDescendants()) do
+                    safe(function()
+                        if obj:IsA("Accessory") then obj:Destroy() end
+                        if obj:IsA("BasePart") then
+                            obj.Material = Enum.Material.Plastic
+                            obj.Reflectance = 0
+                        end
+                    end)
+                end
+            end
+        end
+    end
+end)
+
+-- =========================
+-- 📶 NETWORK HARD LOOP
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(2)
+        safe(function()
+            settings().Network.IncomingReplicationLag = 0
+            settings().Network.PhysicsSendRate = 60
+        end)
+    end
+end)
+
+-- =========================
+-- 🧠 MEMORY AGGRESSIVE
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(2)
+        collectgarbage("collect")
+        collectgarbage("step", 128)
+    end
+end)
+
+-- =========================
+-- 🧬 AI AUTO TUNING SYSTEM
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(1)
+
+        local fps = 1 / RunService.RenderStepped:Wait()
+
+        if fps < 50 then
+            -- BOOST MODE
+            for _, v in pairs(Workspace:GetDescendants()) do
+                safe(function()
+                    if v:IsA("BasePart") then
+                        v.Material = Enum.Material.SmoothPlastic
+                        v.Transparency = 0.2
+                    end
+                end)
+            end
+
+            fflag("TextureQualityOverride", "0")
+            fflag("ShadowMapQuality", "0")
+
+        elseif fps > 80 then
+            -- STABLE MODE
+            Lighting.Brightness = 1
+        end
+    end
+end)
+
+-- =========================
+-- 💀 ULTRA BRUTAL MODE
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(6)
+
+        local fps = 1 / RunService.RenderStepped:Wait()
+
+        if fps < 35 then
+            Lighting.Brightness = 0
+
+            for _, v in pairs(Workspace:GetDescendants()) do
+                safe(function()
+                    if v:IsA("BasePart") then
+                        v.Transparency = 0.4
+                        v.Material = Enum.Material.Plastic
+                    end
+                end)
+            end
+        end
+    end
+end)
+
+-- =========================
+-- 🔁 AUTO REAPPLY GOD MODE
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(4)
+
+        fflag("TaskSchedulerTargetFps", "120")
+        fflag("GraphicsMode", "Performance")
+
+        safe(function()
+            settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+        end)
+    end
+end)
+
+print("🔥 WENAS GOD ENGINE V7 ACTIVE 🔥")
