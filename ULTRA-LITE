@@ -1,0 +1,66 @@
+{
+  "FFlagDebugDisplayFPS": "True",
+
+  // 💀 GRAPHICS (POTATO MODE)
+  "DFIntTextureQualityOverride": "0",
+  "FFlagDisablePostFx": "True",
+  "FIntRenderShadowIntensity": "0",
+  "FIntRenderShadowmapBias": "-10",
+  "FIntGrassMovementReducedMotionFactor": "0",
+  "FIntFRMMaxGrassDistance": "0",
+  "FIntFRMMinGrassDistance": "0",
+  "FIntRenderGrassDetailStrands": "0",
+  "FIntTerrainArraySliceSize": "0",
+  "DFIntMaxFrameBufferSize": "1",
+  "FFlagDebugSkyGray": "True",
+  "FFlagRenderNoLowFrmBloom": "True",
+  "FIntBloomFrmCutoff": "-1",
+
+  // ⚡ FPS BOOST
+  "DFIntDebugFRMQualityLevelOverride": "1",
+  "FFlagTaskSchedulerLimitTargetFpsTo2402": "True",
+  "FIntTargetRefreshRate": "120",
+
+  // 📶 PING GOD MODE (STABLE + RESPONSIVE)
+  "FIntRakNetResendBufferArrayLength": "128",
+  "DFIntConnectionMTUSize": "1360",
+  "DFIntRakNetLoopMs": "1",
+  "DFIntRakNetResendRttMultiple": "1",
+  "DFIntRaknetBandwidthPingSendEveryXSeconds": "1",
+  "DFIntNetworkPrediction": "90",
+  "DFIntNetworkLatencyTolerance": "0",
+  "DFIntPlayerNetworkUpdateRate": "60",
+  "DFIntPlayerNetworkUpdateQueueSize": "20",
+  "DFIntOptimizePingThreshold": "50",
+  "DFIntMaxProcessPacketsJobScaling": "5000",
+  "DFIntMaxProcessPacketsStepsPerCyclic": "3000",
+  "DFIntCodecMaxIncomingPackets": "100",
+  "DFIntCodecMaxOutgoingFrames": "5000",
+
+  // 🧠 MEMORY (ANTI LAG SPIKE)
+  "DFIntMemoryUtilityCurveNumSegments": "50",
+  "DFIntMemoryUtilityCurveBaseHundrethsPercent": "5000",
+  "DFIntMemoryUtilityCurveTotalMemoryReserve": "0",
+  "DFIntDebugRestrictGCDistance": "1",
+
+  // 🚀 PRELOAD (RINGAN BIAR GAK BERAT)
+  "DFIntNumAssetsMaxToPreload": "500",
+  "DFIntAssetPreloading": "500",
+  "FFlagPreloadAllFonts": "False",
+  "FFlagPreloadTextureItemsOption4": "False",
+
+  // ⚙️ CPU SAFE BOOST
+  "FIntTaskSchedulerThreadMin": "2",
+
+  // 🔇 BACKGROUND OFF
+  "FFlagDebugDisableTelemetryV2Event": "True",
+  "FFlagDebugDisableTelemetryV2Counter": "True",
+  "FFlagDebugDisableTelemetryV2Stat": "True",
+  "FFlagDebugDisableTelemetryEventIngest": "True",
+
+  // 😈 EXTRA OPTIMIZE
+  "FFlagFastGPULightCulling3": "True",
+  "FFlagEnableCullableScene2OptimizeStep": "True",
+  "FFlagLuaMenuPerfImprovements": "True",
+  "FFlagMessageBusCallOptimization": "True"
+}
