@@ -1,4 +1,4 @@
---// 💀 FINAL GOD SYSTEM (ALL-IN-ONE)
+--// 💀 CLEAN FPS BOOST SYSTEM (NO PING)
 
 if not game:IsLoaded() then
     game.Loaded:Wait()
@@ -8,7 +8,6 @@ end
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
-local Stats = game:GetService("Stats")
 local Terrain = workspace:FindFirstChildOfClass("Terrain")
 
 local player = Players.LocalPlayer
@@ -20,10 +19,10 @@ local function safe(f)
 end
 
 -- 🚫 prevent double run
-if _G.__GOD_SYSTEM then return end
-_G.__GOD_SYSTEM = true
+if _G.__CLEAN_SYSTEM then return end
+_G.__CLEAN_SYSTEM = true
 
--- 💀 ULTRA BRUTAL OPTIMIZE
+-- 💀 ULTRA OPTIMIZE
 safe(function()
     settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
 
@@ -59,7 +58,117 @@ safe(function()
     end
 end)
 
--- 🎮 FRAME SMOOTHING (MEMC FEEL)
+-- 🎮 FPS + SMOOTHING
+local last = tick()
+local fps = 60
+local smoothFPS = 60
+
+RunService.RenderStepped:Connect(function()
+    local now = tick()
+    local delta = now - last
+    last = now
+
+    if delta > 0 then
+        fps = math.clamp(math.floor(1/delta), 0, 120)
+        smoothFPS = smoothFPS + (fps - smoothFPS) * 0.2
+    end
+end)
+
+-- ⚡ LOW LATENCY
+safe(function()
+    RunService:BindToRenderStep("LowLatency", Enum.RenderPriority.Camera.Value + 1, function() end)
+end)
+
+-- 🧠 MEMORY CLEAN
+task.spawn(function()
+    while true do
+        task.wait(10)
+        safe(function()
+            collectgarbage("collect")
+        end)
+    end
+end)
+
+-- 🧹 PRELOAD OPTIMIZE
+safe(function()
+    for _, v in pairs(workspace:GetDescendants()) do
+        if v:IsA("MeshPart") then
+            v.RenderFidelity = Enum.RenderFidelity.Performance
+        end
+    end
+end)
+
+-- 🗑️ remove old UI
+safe(function()
+    local old = player.PlayerGui:FindFirstChild("BrutalFPSGraph")
+    if old then old:Destroy() end
+end)
+
+-- 📊 GRAPH UI
+local gui = Instance.new("ScreenGui")
+gui.Name = "BrutalFPSGraph"
+gui.ResetOnSpawn = false
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0.75, 0, 0.75, 0)
+frame.Position = UDim2.new(0.125, 0, 0.125, 0)
+frame.BackgroundTransparency = 0.2
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+gui.Parent = player:WaitForChild("PlayerGui")
+
+-- 💀 GRAPH SYSTEM
+local bars = {}
+local maxBars = 80
+local spacing = 8
+local width = 6
+
+for i = 1, maxBars do
+    local bar = Instance.new("Frame")
+    bar.Size = UDim2.new(0, width, 0, 10)
+    bar.Position = UDim2.new(0, i * spacing, 1, 0)
+    bar.AnchorPoint = Vector2.new(0,1)
+    bar.BorderSizePixel = 0
+    bar.BackgroundColor3 = Color3.new(1,1,1)
+    bar.Parent = frame
+    table.insert(bars, bar)
+end
+
+-- 🔥 GRAPH LOOP
+task.spawn(function()
+    while task.wait(0.08) do
+        safe(function()
+            if #bars > 0 then
+                bars[1]:Destroy()
+                table.remove(bars, 1)
+            end
+
+            local newBar = Instance.new("Frame")
+
+            local stepFPS = math.floor(smoothFPS / 5) * 5
+            local height = math.clamp(stepFPS * 2, 5, frame.AbsoluteSize.Y)
+
+            newBar.Size = UDim2.new(0, width, 0, height)
+            newBar.Position = UDim2.new(0, maxBars * spacing, 1, 0)
+            newBar.AnchorPoint = Vector2.new(0,1)
+            newBar.BorderSizePixel = 0
+
+            if smoothFPS >= 50 then
+                newBar.BackgroundColor3 = Color3.fromRGB(0,255,100)
+            elseif smoothFPS >= 30 then
+                newBar.BackgroundColor3 = Color3.fromRGB(255,200,0)
+            else
+                newBar.BackgroundColor3 = Color3.fromRGB(255,50,50)
+            end
+
+            newBar.Parent = frame
+            table.insert(bars, newBar)
+        end)
+    end
+end)
+
+print("💀🔥 CLEAN FPS SYSTEM ACTIVE (NO PING)")-- 🎮 FRAME SMOOTHING (MEMC FEEL)
 local last = tick()
 local fps = 60
 local smoothFPS = 60
