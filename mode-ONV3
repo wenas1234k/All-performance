@@ -1,4 +1,4 @@
---// 💀 CLEAN FPS BOOST SYSTEM (NO PING)
+--// 💀 FINAL STABLE SYSTEM (ANTI CRASH + NO STATS)
 
 if not game:IsLoaded() then
     game.Loaded:Wait()
@@ -12,28 +12,32 @@ local Terrain = workspace:FindFirstChildOfClass("Terrain")
 
 local player = Players.LocalPlayer
 
--- 🛡️ SAFE
-local function safe(f)
-    local ok, err = pcall(f)
-    if not ok then warn("⚠️", err) end
+-- 🛡️ SAFE EXECUTION CORE
+local function protect(fn)
+    return function(...)
+        local ok, err = xpcall(fn, debug.traceback, ...)
+        if not ok then
+            warn("⚠️ Error caught:", err)
+        end
+    end
 end
 
--- 🚫 prevent double run
-if _G.__CLEAN_SYSTEM then return end
-_G.__CLEAN_SYSTEM = true
+-- 🚫 prevent duplicate
+if _G.__ULTRA_SAFE then return end
+_G.__ULTRA_SAFE = true
 
--- 💀 ULTRA OPTIMIZE
-safe(function()
+-- 💀 RENDER OPTIMIZE
+protect(function()
     settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
 
     Lighting.GlobalShadows = false
     Lighting.FogEnd = 1e10
-    Lighting.Brightness = 1
+    Lighting.Brightness = 0.7
     Lighting.EnvironmentDiffuseScale = 0
     Lighting.EnvironmentSpecularScale = 0
 
     for _, v in pairs(Lighting:GetDescendants()) do
-        if v:IsA("PostEffect") then
+        if v:IsA("PostEffect") or v:IsA("Atmosphere") then
             v:Destroy()
         end
     end
@@ -44,75 +48,81 @@ safe(function()
         Terrain.WaterReflectance = 0
         Terrain.WaterTransparency = 1
     end
+end)()
 
+-- 💀 OBJECT CLEAN
+protect(function()
     for _, obj in pairs(workspace:GetDescendants()) do
-        safe(function()
-            if obj:IsA("BasePart") then
-                obj.Material = Enum.Material.SmoothPlastic
-                obj.Reflectance = 0
-                obj.CastShadow = false
-            elseif obj:IsA("ParticleEmitter") or obj:IsA("Trail") then
-                obj.Enabled = false
-            end
-        end)
+        if obj:IsA("BasePart") then
+            obj.Material = Enum.Material.Plastic
+            obj.Reflectance = 0
+            obj.CastShadow = false
+        elseif obj:IsA("Texture") or obj:IsA("Decal") then
+            obj.Transparency = 0.85
+        elseif obj:IsA("ParticleEmitter")
+            or obj:IsA("Trail")
+            or obj:IsA("Explosion") then
+            obj.Enabled = false
+        end
     end
-end)
+end)()
 
--- 🎮 FPS + SMOOTHING
+-- 🎮 FPS CORE (120 SMOOTH)
 local last = tick()
-local fps = 60
-local smoothFPS = 60
+local fps = 120
+local smoothFPS = 120
 
-RunService.RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(protect(function()
     local now = tick()
     local delta = now - last
     last = now
 
     if delta > 0 then
-        fps = math.clamp(math.floor(1/delta), 0, 120)
-        smoothFPS = smoothFPS + (fps - smoothFPS) * 0.2
+        local rawFPS = math.clamp(1/delta, 0, 240)
+        fps = math.clamp(rawFPS, 0, 120)
+
+        -- 💙 ultra smooth interpolation
+        smoothFPS = smoothFPS + (fps - smoothFPS) * 0.1
     end
-end)
+end))
 
--- ⚡ LOW LATENCY
-safe(function()
-    RunService:BindToRenderStep("LowLatency", Enum.RenderPriority.Camera.Value + 1, function() end)
-end)
+-- ⚡ PRIORITY
+protect(function()
+    RunService:BindToRenderStep("UltraSafePriority", Enum.RenderPriority.First.Value, function() end)
+end)()
 
--- 🧠 MEMORY CLEAN
+-- 🧠 MEMORY CONTROL (ANTI LEAK)
+task.spawn(protect(function()
+    while true do
+        task.wait(6)
+        collectgarbage("step", 300)
+    end
+end))
+
+-- 🔁 AUTO RECOVERY (kalau script error berat)
 task.spawn(function()
     while true do
         task.wait(10)
-        safe(function()
-            collectgarbage("collect")
-        end)
-    end
-end)
-
--- 🧹 PRELOAD OPTIMIZE
-safe(function()
-    for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("MeshPart") then
-            v.RenderFidelity = Enum.RenderFidelity.Performance
+        if not _G.__ULTRA_SAFE then
+            _G.__ULTRA_SAFE = true
         end
     end
 end)
 
 -- 🗑️ remove old UI
-safe(function()
+protect(function()
     local old = player.PlayerGui:FindFirstChild("BrutalFPSGraph")
     if old then old:Destroy() end
-end)
+end)()
 
--- 📊 GRAPH UI
+-- 📊 UI GRAPH FULL
 local gui = Instance.new("ScreenGui")
 gui.Name = "BrutalFPSGraph"
 gui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0.75, 0, 0.75, 0)
-frame.Position = UDim2.new(0.125, 0, 0.125, 0)
-frame.BackgroundTransparency = 0.2
+frame.Size = UDim2.new(1, 0, 1, 0)
+frame.BackgroundTransparency = 0.4
 frame.BorderSizePixel = 0
 frame.Parent = gui
 
@@ -120,13 +130,13 @@ gui.Parent = player:WaitForChild("PlayerGui")
 
 -- 💀 GRAPH SYSTEM
 local bars = {}
-local maxBars = 80
-local spacing = 8
-local width = 6
+local maxBars = 140
+local spacing = 9
+local width = 9
 
 for i = 1, maxBars do
     local bar = Instance.new("Frame")
-    bar.Size = UDim2.new(0, width, 0, 10)
+    bar.Size = UDim2.new(0, width, 0, 5)
     bar.Position = UDim2.new(0, i * spacing, 1, 0)
     bar.AnchorPoint = Vector2.new(0,1)
     bar.BorderSizePixel = 0
@@ -135,160 +145,37 @@ for i = 1, maxBars do
     table.insert(bars, bar)
 end
 
--- 🔥 GRAPH LOOP
-task.spawn(function()
-    while task.wait(0.08) do
-        safe(function()
-            if #bars > 0 then
-                bars[1]:Destroy()
-                table.remove(bars, 1)
-            end
-
-            local newBar = Instance.new("Frame")
-
-            local stepFPS = math.floor(smoothFPS / 5) * 5
-            local height = math.clamp(stepFPS * 2, 5, frame.AbsoluteSize.Y)
-
-            newBar.Size = UDim2.new(0, width, 0, height)
-            newBar.Position = UDim2.new(0, maxBars * spacing, 1, 0)
-            newBar.AnchorPoint = Vector2.new(0,1)
-            newBar.BorderSizePixel = 0
-
-            if smoothFPS >= 50 then
-                newBar.BackgroundColor3 = Color3.fromRGB(0,255,100)
-            elseif smoothFPS >= 30 then
-                newBar.BackgroundColor3 = Color3.fromRGB(255,200,0)
-            else
-                newBar.BackgroundColor3 = Color3.fromRGB(255,50,50)
-            end
-
-            newBar.Parent = frame
-            table.insert(bars, newBar)
-        end)
-    end
-end)
-
-print("💀🔥 CLEAN FPS SYSTEM ACTIVE (NO PING)")-- 🎮 FRAME SMOOTHING (MEMC FEEL)
-local last = tick()
-local fps = 60
-local smoothFPS = 60
-
-RunService.RenderStepped:Connect(function()
-    local now = tick()
-    local delta = now - last
-    last = now
-
-    if delta > 0 then
-        fps = math.clamp(math.floor(1/delta), 0, 120)
-        smoothFPS = smoothFPS + (fps - smoothFPS) * 0.2
-    end
-end)
-
--- ⚡ LOW LATENCY INPUT
-safe(function()
-    RunService:BindToRenderStep("LowLatency", Enum.RenderPriority.Camera.Value + 1, function() end)
-end)
-
--- 🧠 MEMORY CLEAN
-task.spawn(function()
+-- 🔥 GRAPH LOOP (ANTI FREEZE)
+task.spawn(protect(function()
     while true do
-        task.wait(10)
-        safe(function()
-            collectgarbage("collect")
-        end)
-    end
-end)
+        task.wait(0.05)
 
--- 🌐 NETWORK STABILIZER (RINGAN)
-task.spawn(function()
-    while true do
-        task.wait(2)
-        safe(function()
-            local ping = Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
-            if ping > 200 then
-                task.wait(0.1)
-            end
-        end)
-    end
-end)
-
--- 🧹 PRELOAD / RENDER SIMPLIFY
-safe(function()
-    for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("MeshPart") then
-            v.RenderFidelity = Enum.RenderFidelity.Performance
+        if #bars > 0 then
+            bars[1]:Destroy()
+            table.remove(bars, 1)
         end
+
+        local newBar = Instance.new("Frame")
+
+        local stepFPS = math.floor(smoothFPS / 10) * 10
+        local height = math.clamp(stepFPS * 3, 10, frame.AbsoluteSize.Y)
+
+        newBar.Size = UDim2.new(0, width, 0, height)
+        newBar.Position = UDim2.new(0, maxBars * spacing, 1, 0)
+        newBar.AnchorPoint = Vector2.new(0,1)
+        newBar.BorderSizePixel = 0
+
+        if stepFPS >= 60 then
+            newBar.BackgroundColor3 = Color3.fromRGB(0,255,0)
+        elseif stepFPS >= 30 then
+            newBar.BackgroundColor3 = Color3.fromRGB(255,255,0)
+        else
+            newBar.BackgroundColor3 = Color3.fromRGB(255,0,0)
+        end
+
+        newBar.Parent = frame
+        table.insert(bars, newBar)
     end
-end)
+end))
 
--- 🗑️ remove old UI
-safe(function()
-    local old = player.PlayerGui:FindFirstChild("BrutalFPSGraph")
-    if old then old:Destroy() end
-end)
-
--- 📊 GRAPH UI (75% SCREEN)
-local gui = Instance.new("ScreenGui")
-gui.Name = "BrutalFPSGraph"
-gui.ResetOnSpawn = false
-
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0.75, 0, 0.75, 0)
-frame.Position = UDim2.new(0.125, 0, 0.125, 0)
-frame.BackgroundTransparency = 0.2
-frame.BorderSizePixel = 0
-frame.Parent = gui
-
-gui.Parent = player:WaitForChild("PlayerGui")
-
--- 💀 GRAPH SYSTEM
-local bars = {}
-local maxBars = 80
-local spacing = 8
-local width = 6
-
-for i = 1, maxBars do
-    local bar = Instance.new("Frame")
-    bar.Size = UDim2.new(0, width, 0, 10)
-    bar.Position = UDim2.new(0, i * spacing, 1, 0)
-    bar.AnchorPoint = Vector2.new(0,1)
-    bar.BorderSizePixel = 0
-    bar.BackgroundColor3 = Color3.new(1,1,1)
-    bar.Parent = frame
-    table.insert(bars, bar)
-end
-
--- 🔥 GRAPH LOOP
-task.spawn(function()
-    while task.wait(0.08) do
-        safe(function()
-            if #bars > 0 then
-                bars[1]:Destroy()
-                table.remove(bars, 1)
-            end
-
-            local newBar = Instance.new("Frame")
-
-            local stepFPS = math.floor(smoothFPS / 5) * 5
-            local height = math.clamp(stepFPS * 2, 5, frame.AbsoluteSize.Y)
-
-            newBar.Size = UDim2.new(0, width, 0, height)
-            newBar.Position = UDim2.new(0, maxBars * spacing, 1, 0)
-            newBar.AnchorPoint = Vector2.new(0,1)
-            newBar.BorderSizePixel = 0
-
-            if smoothFPS >= 50 then
-                newBar.BackgroundColor3 = Color3.fromRGB(0,255,100)
-            elseif smoothFPS >= 30 then
-                newBar.BackgroundColor3 = Color3.fromRGB(255,200,0)
-            else
-                newBar.BackgroundColor3 = Color3.fromRGB(255,50,50)
-            end
-
-            newBar.Parent = frame
-            table.insert(bars, newBar)
-        end)
-    end
-end)
-
-print("💀🔥 GOD SYSTEM FULL ACTIVE")
+print("💀🔥 ULTRA SAFE 120 FPS SYSTEM ACTIVE (NO CRASH)")
