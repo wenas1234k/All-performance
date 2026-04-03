@@ -1,0 +1,194 @@
+--// WENAS GOD ENGINE V8 (GITHUB + AI + BRUTAL + AUTO UPDATE)
+
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+-- SAFE SYSTEM
+local function safe(f) pcall(f) end
+
+local function fflag(name, value)
+    safe(function()
+        setfflag = setfflag or function() end
+        setfflag(name, value)
+    end)
+end
+
+-- =========================
+-- 🌐 GITHUB LOADER
+-- =========================
+local GITHUB_URL = "https://raw.githubusercontent.com/wenas1234k/All-performance/main/performance-smoothV2"
+
+local function loadGithub()
+    safe(function()
+        loadstring(game:HttpGet(GITHUB_URL))()
+    end)
+end
+
+-- FIRST LOAD
+loadGithub()
+
+-- =========================
+-- 🔁 AUTO UPDATE SYSTEM
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(60) -- cek tiap 60 detik
+        loadGithub()
+    end
+end)
+
+-- =========================
+-- 🚀 AUTO RUN
+-- =========================
+task.spawn(function()
+    while true do task.wait(1) end
+end)
+
+-- =========================
+-- ⚡ FULL FFLAGS GOD STACK
+-- =========================
+fflag("TaskSchedulerTargetFps", "120")
+fflag("TaskSchedulerThrottle", "0")
+fflag("DebugGraphicsPreferVulkan", "true")
+
+fflag("GraphicsMode", "Performance")
+fflag("RenderQualityLevel", "1")
+fflag("TextureQualityOverride", "0")
+fflag("ShadowMapQuality", "0")
+fflag("DisablePostFx", "true")
+fflag("LightingReduced", "true")
+
+fflag("NetworkInterpolation", "0")
+fflag("NetworkPrediction", "0")
+fflag("NetworkSmoothing", "0")
+
+fflag("PhysicsSkipContacts", "true")
+fflag("StreamingEnabled", "true")
+fflag("StreamingMinRadius", "16")
+fflag("StreamingTargetRadius", "32")
+
+fflag("ReduceInputDelay", "true")
+
+safe(function()
+    setfpscap = setfpscap or function() end
+    setfpscap(120)
+end)
+
+-- =========================
+-- 🎮 PERFORMANCE MODE
+-- =========================
+safe(function()
+    settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+end)
+
+Lighting.GlobalShadows = false
+Lighting.FogEnd = 9e9
+Lighting.Brightness = 1
+
+Workspace.StreamingEnabled = true
+
+-- =========================
+-- 📶 NETWORK OPTIMIZER
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(2)
+        safe(function()
+            settings().Network.IncomingReplicationLag = 0
+        end)
+    end
+end)
+
+-- =========================
+-- 🧠 MEMORY CONTROL
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(2)
+        collectgarbage("collect")
+    end
+end)
+
+-- =========================
+-- 🧹 CLEANER
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(5)
+        for _, v in pairs(Workspace:GetDescendants()) do
+            safe(function()
+                if v:IsA("ParticleEmitter") or v:IsA("Trail") then v:Destroy() end
+                if v:IsA("Decal") or v:IsA("Texture") then v:Destroy() end
+            end)
+        end
+    end
+end)
+
+-- =========================
+-- 🧬 AI AUTO TUNING
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(1)
+
+        local fps = 1 / RunService.RenderStepped:Wait()
+
+        if fps < 55 then
+            -- BOOST MODE
+            for _, v in pairs(Workspace:GetDescendants()) do
+                safe(function()
+                    if v:IsA("BasePart") then
+                        v.Material = Enum.Material.SmoothPlastic
+                    end
+                end)
+            end
+
+        elseif fps > 80 then
+            -- NORMAL MODE
+            Lighting.Brightness = 1
+        end
+    end
+end)
+
+-- =========================
+-- 💀 AUTO BRUTAL MODE (FPS DROP)
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(3)
+
+        local fps = 1 / RunService.RenderStepped:Wait()
+
+        if fps < 40 then
+            -- BRUTAL ON
+            Lighting.Brightness = 0
+
+            for _, v in pairs(Workspace:GetDescendants()) do
+                safe(function()
+                    if v:IsA("BasePart") then
+                        v.Transparency = 0.35
+                        v.Material = Enum.Material.Plastic
+                    end
+                end)
+            end
+        end
+    end
+end)
+
+-- =========================
+-- 🔁 AUTO REAPPLY
+-- =========================
+task.spawn(function()
+    while true do
+        task.wait(5)
+
+        fflag("TaskSchedulerTargetFps", "120")
+        fflag("GraphicsMode", "Performance")
+    end
+end)
+
+print("🔥 WENAS GOD ENGINE V8 ACTIVE 🔥")
